@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.asterisk.noteapp.ui.auth.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_createAccountFragment"
+            app:destination="@id/createAccountFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_notesFragment"
+            app:destination="@id/notesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createAccountFragment"
+        android:name="com.asterisk.noteapp.ui.auth.register.CreateAccountFragment"
+        android:label="fragment_create_account"
+        tools:layout="@layout/fragment_create_account" >
+        <action
+            android:id="@+id/action_createAccountFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/notesFragment"
+        android:name="com.asterisk.noteapp.ui.notes.NotesFragment"
+        android:label="fragment_notes"
+        tools:layout="@layout/fragment_notes" >
+        <action
+            android:id="@+id/action_notesFragment_to_addEditNoteFragment"
+            app:destination="@id/addEditNoteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditNoteFragment"
+        android:name="com.asterisk.noteapp.ui.add_edit_note.AddEditNoteFragment"
+        android:label="fragment_add_edit_note"
+        tools:layout="@layout/fragment_add_edit_note" >
+        <action
+            android:id="@+id/action_addEditNoteFragment_to_notesFragment"
+            app:destination="@id/notesFragment" />
+    </fragment>
+</navigation>
