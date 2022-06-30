@@ -43,5 +43,10 @@
         <action
             android:id="@+id/action_addEditNoteFragment_to_notesFragment"
             app:destination="@id/notesFragment" />
+        <argument
+            android:name="note"
+            app:argType="com.asterisk.noteapp.data.local.models.LocalNote"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>
