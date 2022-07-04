@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import com.asterisk.noteapp.R
 import com.asterisk.noteapp.databinding.FragmentNotesBinding
 
@@ -16,7 +17,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         setHasOptionsMenu(true)
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -28,6 +29,11 @@ class NotesFragment : Fragment(R.layout.fragment_notes) {
 
         // setup tool bar
         (activity as AppCompatActivity).setSupportActionBar(binding.customToolBar)
+
+        binding.fabAdd.setOnClickListener {
+            val action = NotesFragmentDirections.actionNotesFragmentToAddEditNoteFragment()
+            findNavController().navigate(action)
+        }
     }
 
 
@@ -42,7 +48,7 @@ class NotesFragment : Fragment(R.layout.fragment_notes) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
 //            R.id.searchAction -> {}
         }
 

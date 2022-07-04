@@ -58,22 +58,22 @@
         android:autofillHints="password"
         android:hint="@string/password_hint"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@+id/tvRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/barrier3"
         app:layout_constraintTop_toBottomOf="@+id/etEmail" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/registerLabel"
         style="@style/tv_label_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/new_account"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvRegister"
         app:layout_constraintStart_toStartOf="@+id/guideline3" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvRegister"
         style="@style/tv_label_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -98,6 +98,30 @@
         app:constraint_referenced_ids="emailLabel,passwordLabel"
         tools:layout_editor_absoluteX="395dp"
         tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/btn_login_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRegister"
+        app:layout_constraintVertical_bias="0.719" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.767"
+        tools:visibility="visible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
