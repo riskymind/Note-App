@@ -10,6 +10,7 @@ import com.asterisk.noteapp.data.remote.models.User
 import com.asterisk.noteapp.util.SessionManager
 import com.asterisk.noteapp.util.Resource
 import com.asterisk.noteapp.util.isNetworkConnected
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -49,6 +50,7 @@ class NoteRepoImpl @Inject constructor(
             val result = noteApi.loginAccount(user)
             if (result.success) {
                 sessionManager.saveJwtToken(result.message, user.name ?: "", user.email ?: "")
+                getNotesFromServer()
                 Resource.Success("Logged in successfully")
             } else {
                 Resource.Error(result.message)
@@ -142,6 +144,36 @@ class NoteRepoImpl @Inject constructor(
 
         } catch (e: Exception) {
             Resource.Error(e.message ?: "some problem occurred!!")
+        }
+    }
+
+
+    override fun getAllNotes(): Flow<List<LocalNote>> = noteDao.getAllNoteOrderByDate()
+
+
+    override suspend fun getNotesFromServer() {
+        try {
+            val token = sessionManager.getJwtToken() ?: ""
+            // checking for network connectivity
+            if (!isNetworkConnected(sessionManager.context)) {
+                return
+            }
+
+            val result = noteApi.getAllNote("Bearer $token")
+            result.forEach { remoteNote ->
+                noteDao.insertNote(
+                    LocalNote(
+                        noteTitle = remoteNote.noteTitle,
+                        description = remoteNote.description,
+                        date = remoteNote.date,
+                        connected = true,
+                        noteId = remoteNote.id
+                    )
+                )
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

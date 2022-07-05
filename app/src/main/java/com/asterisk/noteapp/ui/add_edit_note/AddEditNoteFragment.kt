@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.asterisk.noteapp.R
 import com.asterisk.noteapp.databinding.FragmentAddEditNoteBinding
@@ -41,9 +42,11 @@ class AddEditNoteFragment : Fragment(R.layout.fragment_add_edit_note) {
             binding.date.text = viewModel.milliToDate(it)
         }
 
-//        binding.fabSave.setOnClickListener {
-//            noteOperation()
-//        }
+        binding.fabSave.setOnClickListener {
+            noteOperation()
+            val action = AddEditNoteFragmentDirections.actionAddEditNoteFragmentToNotesFragment()
+            findNavController().navigate(action)
+        }
     }
 
 
@@ -55,7 +58,7 @@ class AddEditNoteFragment : Fragment(R.layout.fragment_add_edit_note) {
 
     override fun onPause() {
         super.onPause()
-        noteOperation()
+//        noteOperation()
     }
 
     private fun noteOperation() {
@@ -90,6 +93,5 @@ class AddEditNoteFragment : Fragment(R.layout.fragment_add_edit_note) {
         }
 
         viewModel.updateNote(title, desc)
-
     }
 }
