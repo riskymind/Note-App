@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">Note App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_your_account">Create your account</string>
+    <string name="name_label">Name:</string>
+    <string name="name_hint">Opara Kelechi</string>
+    <string name="email_label">Email:</string>
+    <string name="email_hint">me@gmail.com</string>
+    <string name="password_label">Password:</string>
+    <string name="password_hint">***********************</string>
+    <string name="already_a_user">Already a user?</string>
+    <string name="login">Login</string>
+    <string name="login_account">Login Account</string>
+    <string name="new_account">New Account?</string>
+    <string name="register">Register</string>
+    <string name="title">Title</string>
+    <string name="date">12/mon/2022</string>
+    <string name="description">Description</string>
+    <string name="save_button">Save button</string>
+    <string name="add_a_note">Add a Note</string>
+    <string name="add_note_button">add note button</string>
+    <string name="search">Search</string>
+    <string name="create">Create</string>
 </resources>
