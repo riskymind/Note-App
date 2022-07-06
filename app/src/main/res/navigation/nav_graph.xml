@@ -15,7 +15,7 @@
             app:destination="@id/createAccountFragment" />
         <action
             android:id="@+id/action_loginFragment_to_notesFragment"
-            app:destination="@id/notesFragment" />
+            app:destination="@id/navigation" />
     </fragment>
     <fragment
         android:id="@+id/createAccountFragment"
@@ -26,27 +26,30 @@
             android:id="@+id/action_createAccountFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/notesFragment"
-        android:name="com.asterisk.noteapp.ui.notes.NotesFragment"
-        android:label="fragment_notes"
-        tools:layout="@layout/fragment_notes" >
-        <action
-            android:id="@+id/action_notesFragment_to_addEditNoteFragment"
-            app:destination="@id/addEditNoteFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addEditNoteFragment"
-        android:name="com.asterisk.noteapp.ui.add_edit_note.AddEditNoteFragment"
-        android:label="fragment_add_edit_note"
-        tools:layout="@layout/fragment_add_edit_note" >
-        <action
-            android:id="@+id/action_addEditNoteFragment_to_notesFragment"
-            app:destination="@id/notesFragment" />
-        <argument
-            android:name="note"
-            app:argType="com.asterisk.noteapp.data.local.models.LocalNote"
-            app:nullable="true"
-            android:defaultValue="@null" />
-    </fragment>
+    <navigation android:id="@+id/navigation"
+        app:startDestination="@id/notesFragment">
+        <fragment
+            android:id="@+id/notesFragment"
+            android:name="com.asterisk.noteapp.ui.notes.NotesFragment"
+            android:label="fragment_notes"
+            tools:layout="@layout/fragment_notes">
+            <action
+                android:id="@+id/action_notesFragment_to_addEditNoteFragment"
+                app:destination="@id/addEditNoteFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/addEditNoteFragment"
+            android:name="com.asterisk.noteapp.ui.add_edit_note.AddEditNoteFragment"
+            android:label="fragment_add_edit_note"
+            tools:layout="@layout/fragment_add_edit_note">
+            <action
+                android:id="@+id/action_addEditNoteFragment_to_notesFragment"
+                app:destination="@id/notesFragment" />
+            <argument
+                android:name="note"
+                android:defaultValue="@null"
+                app:argType="com.asterisk.noteapp.data.local.models.LocalNote"
+                app:nullable="true" />
+        </fragment>
+    </navigation>
 </navigation>

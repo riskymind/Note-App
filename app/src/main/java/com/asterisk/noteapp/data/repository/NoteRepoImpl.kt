@@ -10,13 +10,14 @@ import com.asterisk.noteapp.data.remote.models.User
 import com.asterisk.noteapp.util.SessionManager
 import com.asterisk.noteapp.util.Resource
 import com.asterisk.noteapp.util.isNetworkConnected
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.M)
 class NoteRepoImpl @Inject constructor(
-    val noteApi: NoteApi,
-    val noteDao: NoteDao,
-    val sessionManager: SessionManager,
+    private val noteApi: NoteApi,
+    private val noteDao: NoteDao,
+    private val sessionManager: SessionManager,
 ) : NoteRepo {
 
     override suspend fun createUser(user: User): Resource<String> {
@@ -49,6 +50,7 @@ class NoteRepoImpl @Inject constructor(
             val result = noteApi.loginAccount(user)
             if (result.success) {
                 sessionManager.saveJwtToken(result.message, user.name ?: "", user.email ?: "")
+                getNotesFromServer()
                 Resource.Success("Logged in successfully")
             } else {
                 Resource.Error(result.message)
@@ -142,6 +144,84 @@ class NoteRepoImpl @Inject constructor(
 
         } catch (e: Exception) {
             Resource.Error(e.message ?: "some problem occurred!!")
+        }
+    }
+
+
+    override fun getAllNotes(): Flow<List<LocalNote>> = noteDao.getAllNoteOrderByDate()
+
+
+    override suspend fun getNotesFromServer() {
+        try {
+            val token = sessionManager.getJwtToken() ?: ""
+            // checking for network connectivity
+            if (!isNetworkConnected(sessionManager.context)) {
+                return
+            }
+
+            val result = noteApi.getAllNote("Bearer $token")
+            result.forEach { remoteNote ->
+                noteDao.insertNote(
+                    LocalNote(
+                        noteTitle = remoteNote.noteTitle,
+                        description = remoteNote.description,
+                        date = remoteNote.date,
+                        connected = true,
+                        noteId = remoteNote.id
+                    )
+                )
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+
+    override suspend fun deleteNote(noteId: String) {
+        try {
+
+            if (!isNetworkConnected(sessionManager.context)) {
+                noteDao.deleteNoteLocally(noteId)
+                return
+            }
+
+            val token = sessionManager.getJwtToken() ?: ""
+            val result = noteApi.deleteNote(
+                "Bearer $token", noteId
+            )
+            if (result.success) {
+                noteDao.deleteNote(noteId)
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override suspend fun syncNotes() {
+        try {
+            if (!isNetworkConnected(sessionManager.context)) {
+                return
+            }
+
+            val locallyDeletedNote = noteDao.getAllLocalDeletedNotes()
+            locallyDeletedNote.forEach {
+                deleteNote(it.noteId)
+            }
+
+            val notConnectedNotes = noteDao.getAllLocalNotes()
+            notConnectedNotes.forEach {
+                createNote(it)
+            }
+
+            val notUpdatedNotes = noteDao.getAllLocalNotes()
+            notUpdatedNotes.forEach {
+                updateNote(it)
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }
