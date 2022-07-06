@@ -47,6 +47,10 @@ class LoginViewModel @Inject constructor(
         val user = User(email = email, password = password)
         _loginState.emit(noteRepo.login(user))
 
+    }
+
+
+    fun checkIfUserIsLoggedIn() = viewModelScope.launch(Dispatchers.IO) {
 
     }
 

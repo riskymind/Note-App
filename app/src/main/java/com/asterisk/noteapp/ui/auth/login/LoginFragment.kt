@@ -14,9 +14,13 @@ import com.asterisk.noteapp.R
 import com.asterisk.noteapp.databinding.FragmentAddEditNoteBinding
 import com.asterisk.noteapp.databinding.FragmentLoginBinding
 import com.asterisk.noteapp.util.Resource
+import com.asterisk.noteapp.util.SessionManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -26,9 +30,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private val viewModel by viewModels<LoginViewModel>()
 
+    @Inject
+    lateinit var sessionManager: SessionManager
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentLoginBinding.bind(view)
+
+        checkLoginState()
 
         subscribeToLoginState()
 
@@ -43,6 +52,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.tvRegister.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginFragmentToCreateAccountFragment()
             findNavController().navigate(action)
+        }
+
+    }
+
+    private fun checkLoginState() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val token = sessionManager.getJwtToken()
+            if (token != null) {
+                withContext(Dispatchers.Main) {
+                    val action = LoginFragmentDirections.actionLoginFragmentToNotesFragment()
+                    findNavController().navigate(action)
+                }
+            }
         }
 
     }

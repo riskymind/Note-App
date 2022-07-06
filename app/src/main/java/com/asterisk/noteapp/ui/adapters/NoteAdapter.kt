@@ -32,7 +32,7 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
                 noteDescription.text = it
             }
 
-            noteSync.setBackgroundColor(
+            noteSync.setBackgroundResource(
                 if (note.connected) R.drawable.sync else R.drawable.not_sync
             )
 

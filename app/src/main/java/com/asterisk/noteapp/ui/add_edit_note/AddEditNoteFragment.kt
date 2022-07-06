@@ -88,7 +88,6 @@ class AddEditNoteFragment : Fragment(R.layout.fragment_add_edit_note) {
         val desc = binding.desc.text.toString().trim()
 
         if (title.isNullOrEmpty() || desc.isNullOrEmpty()) {
-            // todos later
             return
         }
 
